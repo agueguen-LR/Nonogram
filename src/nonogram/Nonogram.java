@@ -23,10 +23,10 @@ public class Nonogram {
 //        Board board = Test.getBoard();
 //        ActiveNonogram Test2 = new ActiveNonogram("Test2.bmp", 1);
 //        Board board = Test2.getBoard();
-        ActiveNonogram CatPot_Large = new ActiveNonogram("CatPot_Large.png", 6);
+        ActiveNonogram CatPot_Large = new ActiveNonogram("CatPot_Large.png", 12);
         Board board = CatPot_Large.getBoard();
         Solver solver = new Solver(board);
-        solver.BeginSolving(0);
+        solver.BeginSolving(1);
 
 //        System.out.println("\nUP");
 //        System.out.println("Column 0");

@@ -7,22 +7,46 @@ package nonogram;
 import java.util.ArrayList;
 
 /**
+ * Represents a clue in the nonogram puzzle.
+ * A clue is a sequence of integers that indicates the lengths of filled blocks in a row or column.
+ * The clue can be constructed from a list of brightness values or copied from another clue.
+ * The clue can be queried to get its string representation or a copy of the clue.
+ * The toString method provides a string representation of the clue.
  *
  * @author Adrien
  */
 public class Clue {
-    
+
+    /**
+     * The list of integers representing the clue.
+     */
     private ArrayList<Integer> clue = new ArrayList<>();
 
+    /**
+     * Constructs an empty Clue.
+     */
     public Clue() {
     }
-    
+
+    /**
+     * Constructs a Clue by copying another clue.
+     * This constructor is private and used internally for copying.
+     *
+     * @param clueCopy the list of integers to copy
+     * @param id an identifier to validate the copy operation
+     */
     private Clue(ArrayList<Integer> clueCopy, int id){
         if (id==1234){
             this.clue = clueCopy;
         }
     }
 
+    /**
+     * Constructs a Clue from a list of brightness values.
+     * A brightness value less than 0.5 indicates a filled square.
+     *
+     * @param brightnessLine the list of brightness values
+     */
     public Clue(ArrayList<Float> brightnessLine) {
         boolean previousIsFilled = false;
         for (Float num : brightnessLine){
@@ -37,30 +61,47 @@ public class Clue {
         }
     }
 
+    /**
+     * Returns the list of integers representing the clue.
+     *
+     * @return the list of integers representing the clue
+     */
     public ArrayList<Integer> getClue() {
         return clue;
     }
-    
+
+    /**
+     * Creates a copy of the current Clue.
+     *
+     * @return a new Clue object that is a copy of the current Clue
+     */
     public Clue copy(){
-        ArrayList<Integer> tempClue = new ArrayList<Integer>();
-        for(Integer i : this.clue){
-            tempClue.add(Integer.valueOf(i));
-        }
+        ArrayList<Integer> tempClue = new ArrayList<>(this.clue);
         return new Clue(tempClue, 1234);
     }
-    
-    
+
+    /**
+     * Returns a string representation of the clue.
+     * The string representation is a space-separated list of integers.
+     *
+     * @return the string representation of the clue
+     */
     public String getClueString(){
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (Integer num : clue){
-            str += num.toString()+ " ";
+            str.append(num.toString()).append(" ");
         }
-        return str.stripTrailing();
+        return str.toString().stripTrailing();
     }
 
+    /**
+     * Returns a string representation of the Clue object.
+     *
+     * @return the string representation of the Clue object
+     */
     @Override
     public String toString() {
         return "clue=" + clue;
     }
-    
+
 }
