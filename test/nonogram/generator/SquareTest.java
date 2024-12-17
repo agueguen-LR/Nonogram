@@ -21,16 +21,16 @@ public class SquareTest {
     }
 
     @Test
-    void fillSquareChangesStateToFilled() {
-        square.fillSquare();
+    void fillChangesStateToFilled() {
+        square.fill();
         assertTrue(square.isFilled());
         assertFalse(square.isEmpty());
         assertFalse(square.isCrossed());
     }
 
     @Test
-    void crossSquareChangesStateToCrossed() {
-        square.crossSquare();
+    void crossChangesStateToCrossed() {
+        square.cross();
         assertTrue(square.isCrossed());
         assertFalse(square.isEmpty());
         assertFalse(square.isFilled());
@@ -39,9 +39,9 @@ public class SquareTest {
     @Test
     void toStringReturnsCorrectRepresentation() {
         assertEquals(" ", square.toString());
-        square.fillSquare();
+        square.fill();
         assertEquals("O", square.toString());
-        square.crossSquare();
+        square.cross();
         assertEquals("X", square.toString());
     }
 }

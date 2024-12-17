@@ -37,14 +37,14 @@ public class Square {
     /**
      * Sets the state of the square to FILLED.
      */
-    public void fillSquare(){
+    public void fill(){
         state = State.FILLED;
     }
 
     /**
      * Sets the state of the square to CROSS.
      */
-    public void crossSquare(){
+    public void cross(){
         state = State.CROSS;
     }
 
