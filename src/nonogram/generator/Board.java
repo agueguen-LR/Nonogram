@@ -92,7 +92,7 @@ public class Board extends JPanel {
      * @param Ycoord the y-coordinate of the square
      */
     public void fillSquare(int Xcoord, int Ycoord){
-        board.get(Ycoord).get(Xcoord).fillSquare();
+        board.get(Ycoord).get(Xcoord).fill();
     }
 
     /**
@@ -102,7 +102,7 @@ public class Board extends JPanel {
      * @param Ycoord the y-coordinate of the square
      */
     public void crossSquare(int Xcoord, int Ycoord){
-        board.get(Ycoord).get(Xcoord).crossSquare();
+        board.get(Ycoord).get(Xcoord).cross();
     }
 
     /**
