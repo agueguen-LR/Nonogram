@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class NonogramTest {
 
@@ -53,11 +54,11 @@ public class NonogramTest {
     @Test
     void reduceArrayHandlesSingleElementArray() {
         ArrayList<ArrayList<Float>> array = new ArrayList<>();
-        array.add(new ArrayList<>(Arrays.asList(1.0f)));
+        array.add(new ArrayList<>(List.of(1.0f)));
 
         ArrayList<ArrayList<Float>> reducedArray = Nonogram.ReduceArray(array, 1);
         ArrayList<ArrayList<Float>> expectedArray = new ArrayList<>();
-        expectedArray.add(new ArrayList<>(Arrays.asList(1.0f)));
+        expectedArray.add(new ArrayList<>(List.of(1.0f)));
 
         assertEquals(expectedArray, reducedArray);
     }
