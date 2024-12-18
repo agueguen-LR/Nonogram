@@ -11,24 +11,24 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
- * The Nonogram class represents a nonogram puzzle generator.
+ * The BoardGenerator class represents a nonogram puzzle generator.
  * It reads an image file, processes its brightness values, and generates clues for the puzzle.
  * The puzzle is represented by a Board object.
  *
  * @author agueguen-LR
  */
-public class Nonogram {
+public class BoardGenerator {
 
     private BufferedImage img;
     private final Board board;
 
     /**
-     * Constructs a Nonogram object by reading an image file and generating the puzzle clues.
+     * Constructs a BoardGenerator object by reading an image file and generating the puzzle clues.
      *
      * @param filename the name of the image file to read
      * @param pixelSize the size of the pixel block to reduce the image to
      */
-    public Nonogram(String filename, int pixelSize) {
+    public BoardGenerator(String filename, int pixelSize) {
         try {
             img = ImageIO.read(new File(filename));
             System.out.println("Successfully Loaded Bitmap");
@@ -83,7 +83,7 @@ public class Nonogram {
      * @param factor the factor by which to reduce the array
      * @return the reduced 2D array
      */
-    ArrayList<ArrayList<Float>> ReduceArray(ArrayList<ArrayList<Float>> array, int factor){
+    private ArrayList<ArrayList<Float>> ReduceArray(ArrayList<ArrayList<Float>> array, int factor){
         ArrayList<ArrayList<Float>> reducedArray = new ArrayList<>();
         Float sumValues = 0f;
         for (int y = 0; y < array.size(); y+=factor){
