@@ -4,8 +4,9 @@
  */
 package nonogram;
 
-import nonogram.generator.Nonogram;
+import nonogram.generator.BoardGenerator;
 import nonogram.generator.Board;
+import nonogram.solver.BoardCompleter;
 import nonogram.solver.Solver;
 
 /**
@@ -25,10 +26,14 @@ public class Main {
 //        Board board = Test.getBoard();
 //        ActiveNonogram Test2 = new ActiveNonogram("Test2.bmp", 1);
 //        Board board = Test2.getBoard();
-        Nonogram CatPot_Large = new Nonogram("resources/CatPot_Large.png", 12);
+        BoardGenerator CatPot_Large = new BoardGenerator("resources/CatPot_Large.png", 12);
         Board board = CatPot_Large.getBoard();
-        Solver solver = new Solver(board);
+
+        BoardCompleter solver = new BoardCompleter(board);
         solver.BeginSolving(1);
+
+//        Solver solver = new Solver(board);
+//        solver.BeginSolving(1);
         
     }
     
