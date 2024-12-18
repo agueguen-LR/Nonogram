@@ -68,6 +68,28 @@ public class Board extends JPanel {
     }
 
     /**
+     * Returns the list of squares in the specified row.
+     * @param y the row number
+     * @return the list of squares in the specified row
+     */
+    public ArrayList<Square> getRow(int y){
+        return board.get(y);
+    }
+
+    /**
+     * Returns the list of squares in the specified column.
+     * @param x the column number
+     * @return the list of squares in the specified column
+     */
+    public ArrayList<Square> getColumn(int x){
+        ArrayList<Square> column = new ArrayList<>();
+        for (ArrayList<Square> row : board){
+            column.add(row.get(x));
+        }
+        return column;
+    }
+
+    /**
      * Returns the list of horizontal clues.
      *
      * @return the list of horizontal clues
