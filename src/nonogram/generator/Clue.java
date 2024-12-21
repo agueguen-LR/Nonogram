@@ -94,6 +94,11 @@ public class Clue {
         return str.toString().stripTrailing();
     }
 
+    public Clue reverse(){
+        ArrayList<Integer> reversedClue = new ArrayList<>(this.clue.reversed());
+        return new Clue(reversedClue, 1234);
+    }
+
     /**
      * Returns a string representation of the Clue object.
      *
