@@ -6,25 +6,25 @@ import nonogram.generator.Square;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoardCompleter {
 
     /**
      * The board on which the Nonogram puzzle is being solved.
      */
-    private Board board;
+    private final Board board;
 
     /**
      * The list of horizontal clues for each row of the Nonogram.
      */
-    private ArrayList<Clue> horizClues = new ArrayList<>();
+    private final ArrayList<Clue> horizClues;
 
     /**
      * The list of vertical clues for each column of the Nonogram.
      */
-    private ArrayList<Clue> vertClues = new ArrayList<>();
+    private final ArrayList<Clue> vertClues;
 
     /**
      * Constructs a new {@code Solver} instance with the specified board and
@@ -68,26 +68,35 @@ public class BoardCompleter {
 
     public void fillBoard(JFrame frame, int delay) throws InterruptedException {
         int[] dimensions = board.getDimensions();
-        LineSolver solver = new LineSolver();
 
-        for (int i = 0; i < dimensions[0]; i++) {
-            ArrayList<Square> row = board.getRow(i);
-            solver.setLine(row, horizClues.get(i));
-            ArrayList<Integer> squaresToFill = solver.FillEmptySquares();
-            for (int squareIndex : squaresToFill) {
-                row.get(squareIndex).fill();
-                slowProgression(frame, delay);
+        int loop = 0;
+        while(loop < 2) {
+            //for all rows
+            for (int i = 0; i < dimensions[0]; i++) {
+                ArrayList<Square> row = board.getRow(i);
+                drawNewStates(frame, delay, i, row, horizClues);
             }
+
+            //for all columns
+            for (int i = 0; i < dimensions[1]; i++) {
+                ArrayList<Square> column = board.getColumn(i);
+                drawNewStates(frame, delay, i, column, vertClues);
+            }
+            loop++;
         }
+    }
 
-        for (int i = 0; i < dimensions[1]; i++) {
-            ArrayList<Square> column = board.getColumn(i);
-            solver.setLine(column, vertClues.get(i));
-            ArrayList<Integer> squaresToFill = solver.FillEmptySquares();
-            for (int squareIndex : squaresToFill) {
-                column.get(squareIndex).fill();
-                slowProgression(frame, delay);
+    private void drawNewStates(JFrame frame, int delay, int clueIndex, ArrayList<Square> line, ArrayList<Clue> clues) throws InterruptedException {
+        LineSolver solver = new LineSolver();
+        HashMap<Integer, Boolean> newSquareStates = solver.getNewSquareStates(line, clues.get(clueIndex));
+        for (int squareIndex : newSquareStates.keySet()) {
+            if (newSquareStates.get(squareIndex)) {
+                line.get(squareIndex).fill();
             }
+            else {
+                line.get(squareIndex).cross();
+            }
+            slowProgression(frame, delay);
         }
     }
 }
