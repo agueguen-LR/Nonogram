@@ -3,7 +3,6 @@ package nonogram.solver;
 import static org.junit.jupiter.api.Assertions.*;
 
 import nonogram.generator.Clue;
-import nonogram.generator.Square;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

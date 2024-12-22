@@ -36,10 +36,7 @@ public class LineSolver extends LineSolverUtilities{
             }
         }
 
-        //REMOVE LATER
-        if(!newCrossedSquares.isEmpty()){
-            return newSquareStates;
-        }
+        lineState = updateLineState(line, newSquareStates);
 
         HashSet<Integer> newFilledSquares = new HashSet<>();
         newFilledSquares.addAll(SpaceFiller(lineState, clue));
@@ -98,6 +95,7 @@ public class LineSolver extends LineSolverUtilities{
 
     /**
      * Extends the filled squares based on distance from the edge, goes leftwards
+     * !! Doesn't work if crosses haven't been placed appropriately before (use PlaceCrosser) !!
      * @param lineState the state of the line
      * @param clue the clue for the line
      * @return the indexes of the squares that should be filled
@@ -157,7 +155,7 @@ public class LineSolver extends LineSolverUtilities{
      */
     public ArrayList<Integer> edgeExtenderReversed(ArrayList<Square> line, ArrayList<Integer> lineState, Clue clue) {
         ArrayList<Integer> newSquares = edgeExtender(new ArrayList<>(line.reversed()), new ArrayList<>(lineState.reversed()), clue.reverse());
-        newSquares.replaceAll(integer -> line.size() - integer);
+        newSquares.replaceAll(integer -> line.size() - integer - 1);
         return newSquares;
     }
 
@@ -165,8 +163,19 @@ public class LineSolver extends LineSolverUtilities{
         ArrayList<Integer> CrossedSquares = new ArrayList<>();
         int IndexOfNextFilled = 0; // should be next filled active not from 0
         int IndexOfPreviousEmpty;
-        int IndexOfNextEmpty;
+        int IndexOfNextEmpty = nextEmptyIndex(0, lineState);
         boolean uncertaintyFlag = false;
+
+        if (removeCompletedClues(clue, lineState).isEmpty()){ // line is complete, crosses should be placed in all empty squares
+            while(IndexOfNextEmpty != -1){
+                CrossedSquares.addAll(stateSectionToSquareIndexes(IndexOfNextEmpty, lineState));
+                if(IndexOfNextEmpty + 1 == lineState.size()){
+                    return CrossedSquares;
+                }
+                IndexOfNextEmpty = nextEmptyIndex(IndexOfNextEmpty + 1, lineState);
+            }
+            return CrossedSquares;
+        }
 
         for (Integer currentClue : clue.getClue()){
 
@@ -213,7 +222,7 @@ public class LineSolver extends LineSolverUtilities{
 
     public ArrayList<Integer> CrossPlacerReversed(ArrayList<Square> line, ArrayList<Integer> lineState, Clue clue){
         ArrayList<Integer> CrossedSquares = CrossPlacer(new ArrayList<>(lineState.reversed()), clue.reverse());
-        CrossedSquares.replaceAll(integer -> line.size() - integer - 1);
+        CrossedSquares.replaceAll(integer -> line.size() - integer -1);
         return CrossedSquares;
     }
 }

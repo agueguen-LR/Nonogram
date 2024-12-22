@@ -4,7 +4,7 @@ import nonogram.generator.Clue;
 import nonogram.generator.Square;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
 
@@ -232,6 +232,39 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
         return lengthOfSection(startCrossIndex+1, endCrossIndex-1, lineState);
     }
 
+    public ArrayList<Integer> updateLineState(ArrayList<Square> line, HashMap<Integer, Boolean> newSquareStates){
+        ArrayList<Square> updatedLine = copyLine(line);
+        for (Integer index : newSquareStates.keySet()){
+            if (newSquareStates.get(index)){
+                updatedLine.get(index).fill();
+            } else {
+                updatedLine.get(index).cross();
+            }
+        }
+        return getLineState(updatedLine);
+    }
+
+    private ArrayList<Square> copyLine(ArrayList<Square> line){
+        ArrayList<Square> copy = new ArrayList<>();
+        for (Square square : line){
+            Square newSquare = new Square();
+            if(square.isFilled()){
+                newSquare.fill();
+            } else if (square.isCrossed()){
+                newSquare.cross();
+            }
+            copy.add(newSquare);
+        }
+        return copy;
+    }
+
+    public ArrayList<Integer> stateSectionToSquareIndexes(int sectionIndex, ArrayList<Integer> lineState){
+        ArrayList<Integer> squareIndexes = new ArrayList<>();
+        for (int i = 0; i < Math.abs(lineState.get(sectionIndex)); i++){
+            squareIndexes.add(stateIndexToSquareIndex(sectionIndex, lineState) + i);
+        }
+        return squareIndexes;
+    }
 
 
 

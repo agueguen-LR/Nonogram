@@ -70,7 +70,7 @@ public class BoardCompleter {
         int[] dimensions = board.getDimensions();
 
         int loop = 0;
-        while(loop < 2) {
+        while(loop < 20) {
             //for all rows
             for (int i = 0; i < dimensions[0]; i++) {
                 ArrayList<Square> row = board.getRow(i);
