@@ -7,7 +7,6 @@ package nonogram;
 import nonogram.generator.BoardGenerator;
 import nonogram.generator.Board;
 import nonogram.solver.BoardCompleter;
-import nonogram.solver.Solver;
 
 /**
  *
@@ -20,21 +19,14 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
-//        ActiveNonogram Camera = new ActiveNonogram("Camera.bmp", 1);
+//        BoardGenerator Camera = new BoardGenerator("resources/Camera.bmp", 1);
 //        Board board = Camera.getBoard();
-//        ActiveNonogram Test = new ActiveNonogram("Test.bmp", 1);
-//        Board board = Test.getBoard();
-//        ActiveNonogram Test2 = new ActiveNonogram("Test2.bmp", 1);
-//        Board board = Test2.getBoard();
-        BoardGenerator CatPot_Large = new BoardGenerator("resources/CatPot_Large.png", 12);
+        BoardGenerator CatPot_Large = new BoardGenerator("resources/CatPot_Large.png", 20);
         Board board = CatPot_Large.getBoard();
 
         BoardCompleter solver = new BoardCompleter(board);
-        solver.BeginSolving(1);
+        solver.BeginSolving(3);
 
-//        Solver solver = new Solver(board);
-//        solver.BeginSolving(1);
-        
     }
     
 }
