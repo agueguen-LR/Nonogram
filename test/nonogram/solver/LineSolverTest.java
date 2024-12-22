@@ -144,5 +144,16 @@ public class LineSolverTest {
         expectedFilledSquares = new ArrayList<>();
         assertEquals(expectedFilledSquares, new ArrayList<>(filledSquares));
     }
+
+    @Test
+    void testCrossPlacer(){
+        ArrayList<Integer> crossedSquares = lineSolver.CrossPlacer(lineSolver.getLineState(lineFilled), clue21);
+        ArrayList<Integer> expectedCrossedSquares = new ArrayList<>(List.of(2));
+        assertEquals(expectedCrossedSquares, crossedSquares);
+
+        crossedSquares = lineSolver.CrossPlacer(lineSolver.getLineState(lineEmpty), new Clue());
+        expectedCrossedSquares = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+        assertEquals(expectedCrossedSquares, crossedSquares);
+    }
     
 }

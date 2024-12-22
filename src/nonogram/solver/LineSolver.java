@@ -5,6 +5,7 @@ import nonogram.generator.Square;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * LineSolver does as much as it can on a single line of the nonogram.
@@ -25,20 +26,30 @@ public class LineSolver extends LineSolverUtilities{
         ArrayList<Integer> lineState = getLineState(line);
 
         HashMap<Integer, Boolean> newSquareStates = new HashMap<>();
-        ArrayList<Integer> spaceFiller = SpaceFiller(lineState, clue);
-        ArrayList<Integer> edgeExtender = edgeExtender(line, lineState, clue);
-        ArrayList<Integer> edgeExtenderReversed = edgeExtender(new ArrayList<>(line.reversed()), new ArrayList<>(lineState.reversed()), clue.reverse());
-        for(Integer squareIndex : spaceFiller){
+
+        HashSet<Integer> newCrossedSquares = new HashSet<>();
+        newCrossedSquares.addAll(CrossPlacer(lineState, clue));
+        newCrossedSquares.addAll(CrossPlacerReversed(line, lineState, clue));
+        for(Integer squareIndex : newCrossedSquares){
+            if(line.get(squareIndex).isEmpty()){
+                newSquareStates.put(squareIndex, false);
+            }
+        }
+
+        //REMOVE LATER
+        if(!newCrossedSquares.isEmpty()){
+            return newSquareStates;
+        }
+
+        HashSet<Integer> newFilledSquares = new HashSet<>();
+        newFilledSquares.addAll(SpaceFiller(lineState, clue));
+        newFilledSquares.addAll(edgeExtender(line, lineState, clue));
+        newFilledSquares.addAll(edgeExtenderReversed(line, lineState, clue));
+        for(Integer squareIndex : newFilledSquares){
             if(line.get(squareIndex).isEmpty()){
                 newSquareStates.put(squareIndex, true);
             }
         }
-        for(Integer squareIndex : edgeExtender){
-            newSquareStates.put(squareIndex, true);
-        }
-//        for(Integer squareIndex : edgeExtenderReversed){
-//            newSquareStates.put(line.size()-squareIndex, true);
-//        }
         return newSquareStates;
     }
 
@@ -136,5 +147,73 @@ public class LineSolver extends LineSolverUtilities{
         }
 
         return newSquares;
+    }
+
+    /**
+     * Extends the filled squares based on distance from the edge, goes rightwards
+     * @param lineState the state of the line
+     * @param clue the clue for the line
+     * @return the indexes of the squares that should be filled
+     */
+    public ArrayList<Integer> edgeExtenderReversed(ArrayList<Square> line, ArrayList<Integer> lineState, Clue clue) {
+        ArrayList<Integer> newSquares = edgeExtender(new ArrayList<>(line.reversed()), new ArrayList<>(lineState.reversed()), clue.reverse());
+        newSquares.replaceAll(integer -> line.size() - integer);
+        return newSquares;
+    }
+
+    public ArrayList<Integer> CrossPlacer(ArrayList<Integer> lineState, Clue clue){
+        ArrayList<Integer> CrossedSquares = new ArrayList<>();
+        int IndexOfNextFilled = 0; // should be next filled active not from 0
+        int IndexOfPreviousEmpty;
+        int IndexOfNextEmpty;
+        boolean uncertaintyFlag = false;
+
+        for (Integer currentClue : clue.getClue()){
+
+            IndexOfNextFilled = nextFilledIndex(IndexOfNextFilled, lineState);
+            if (IndexOfNextFilled == -1 || lineState.get(IndexOfNextFilled) > currentClue){ // no more crosses can be deduced
+                return CrossedSquares;
+            }
+
+            IndexOfPreviousEmpty = previousEmptyIndex(IndexOfNextFilled, lineState);
+            if (IndexOfPreviousEmpty == -1){ // we're at an edge
+
+                if (IndexOfNextFilled + 1 < lineState.size()){
+                    if (currentClue.equals(lineState.get(IndexOfNextFilled)) && lineState.get(IndexOfNextFilled + 1) < 0){
+                        CrossedSquares.add(stateIndexToSquareIndex(IndexOfNextFilled + 1, lineState));
+                    } else if (currentClue > lineState.get(IndexOfNextFilled)) {
+                        uncertaintyFlag = true;
+
+                        return CrossedSquares; //remove once uncertainty code has been implemented
+                    }
+                }
+
+                continue;
+            }
+
+            if (lineState.get(IndexOfPreviousEmpty) > currentClue){ // no more crosses can be deduced
+                return CrossedSquares;
+            }
+
+            // TO DO add cross to the left if == and to the right if < currentClue + set flag to true
+            return CrossedSquares; // remove this line once implemented
+        }
+
+        // all clues have been checked here -> crosses should be placed in all empty squares
+        for (int sectionIndex = 0; sectionIndex < lineState.size(); sectionIndex++) {
+            Integer sectionValue = lineState.get(sectionIndex);
+            if (sectionValue < 0) {
+                for (int i = 0; i < Math.abs(sectionValue); i++) {
+                    CrossedSquares.add(stateIndexToSquareIndex(sectionIndex, lineState) + i);
+                }
+            }
+        }
+        return CrossedSquares;
+    }
+
+    public ArrayList<Integer> CrossPlacerReversed(ArrayList<Square> line, ArrayList<Integer> lineState, Clue clue){
+        ArrayList<Integer> CrossedSquares = CrossPlacer(new ArrayList<>(lineState.reversed()), clue.reverse());
+        CrossedSquares.replaceAll(integer -> line.size() - integer - 1);
+        return CrossedSquares;
     }
 }
