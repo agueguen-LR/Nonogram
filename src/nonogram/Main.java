@@ -19,13 +19,13 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException {
 
-//        BoardGenerator Camera = new BoardGenerator("resources/Camera.bmp", 1);
-//        Board board = Camera.getBoard();
-        BoardGenerator CatPot_Large = new BoardGenerator("resources/CatPot_Large.png", 20);
-        Board board = CatPot_Large.getBoard();
+        BoardGenerator Camera = new BoardGenerator("resources/Camera.bmp", 1);
+        Board board = Camera.getBoard();
+//        BoardGenerator CatPot_Large = new BoardGenerator("resources/CatPot_Large.png", 36);
+//        Board board = CatPot_Large.getBoard();
 
         BoardCompleter solver = new BoardCompleter(board);
-        solver.BeginSolving(3);
+        solver.BeginSolving(10);
 
     }
     
