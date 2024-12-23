@@ -34,25 +34,6 @@ public class LineSolverUtilitiesTest {
     }
 
     @Test
-    void testLengthOfIncompleteSection() {
-        ArrayList<Integer> lineState = new ArrayList<>(Arrays.asList(2, -1, 1, 0, -2));
-        int length = lineSolver.lengthOfIncompleteSection(lineState);
-        assertEquals(5, length);
-
-        lineState = new ArrayList<>(Arrays.asList(2, -1, 1, 0, 2));
-        length = lineSolver.lengthOfIncompleteSection(lineState);
-        assertEquals(1, length);
-
-        lineState = new ArrayList<>(Arrays.asList(2, 0, -3, 2, -2, 0, 1));
-        length = lineSolver.lengthOfIncompleteSection(lineState);
-        assertEquals(7, length);
-
-        lineState = new ArrayList<>(Arrays.asList(2, 1, 0, 1, 2));
-        length = lineSolver.lengthOfIncompleteSection(lineState);
-        assertEquals(0, length);
-    }
-
-    @Test
     void testLengthOfInterCrossSection() {
         ArrayList<Integer> lineState = new ArrayList<>(Arrays.asList(2, 0, 1, 0, -2));
         int length = lineSolver.lengthOfInterCrossSection(lineState);

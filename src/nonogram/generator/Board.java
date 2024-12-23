@@ -108,43 +108,12 @@ public class Board extends JPanel {
     }
 
     /**
-     * Fills the square at the specified coordinates.
-     *
-     * @param Xcoord the x-coordinate of the square
-     * @param Ycoord the y-coordinate of the square
-     */
-    public void fillSquare(int Xcoord, int Ycoord){
-        board.get(Ycoord).get(Xcoord).fill();
-    }
-
-    /**
-     * Crosses the square at the specified coordinates.
-     *
-     * @param Xcoord the x-coordinate of the square
-     * @param Ycoord the y-coordinate of the square
-     */
-    public void crossSquare(int Xcoord, int Ycoord){
-        board.get(Ycoord).get(Xcoord).cross();
-    }
-
-    /**
      * Returns the dimensions of the board.
      *
      * @return an array containing the number of columns and rows in the board
      */
     public int[] getDimensions(){
         return new int[]{board.getFirst().size(), board.size()};
-    }
-
-    /**
-     * Returns the square at the specified coordinates.
-     *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
-     * @return the square at the specified coordinates
-     */
-    public Square getSquare(int x, int y){
-        return board.get(y).get(x);
     }
 
     /**

@@ -19,7 +19,6 @@ interface StateUtilities {
     int previousEmptyIndex(int currentIndex, ArrayList<Integer> lineState);
 
     int lengthOfSection(int startIndex, int endIndex, ArrayList<Integer> lineState);
-    int lengthOfIncompleteSection(ArrayList<Integer> lineState);
     int lengthOfInterCrossSection(ArrayList<Integer> lineState);
 
     ArrayList<Integer> updateLineState(ArrayList<Square> line, HashMap<Integer, Boolean> newSquareStates);

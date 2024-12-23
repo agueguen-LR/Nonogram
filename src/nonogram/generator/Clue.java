@@ -71,16 +71,6 @@ public class Clue {
     }
 
     /**
-     * Creates a copy of the current Clue.
-     *
-     * @return a new Clue object that is a copy of the current Clue
-     */
-    public Clue copy(){
-        ArrayList<Integer> tempClue = new ArrayList<>(this.clue);
-        return new Clue(tempClue, 1234);
-    }
-
-    /**
      * Returns a string representation of the clue.
      * The string representation is a space-separated list of integers.
      *
