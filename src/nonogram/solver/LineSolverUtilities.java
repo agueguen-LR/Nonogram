@@ -4,6 +4,7 @@ import nonogram.generator.Clue;
 import nonogram.generator.Square;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
@@ -81,6 +82,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * @return the index of the next cross in lineState after currentIndex, -1 if there is no cross
      */
     public int nextCrossIndex(int currentIndex, ArrayList<Integer> lineState){
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i < lineState.size()){
             if (lineState.get(i) == 0){
@@ -98,6 +100,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * @return the index of the previous cross in lineState before currentIndex, -1 if there is no cross
      */
     public int previousCrossIndex(int currentIndex, ArrayList<Integer> lineState){
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i >= 0){
             if (lineState.get(i) == 0){
@@ -115,6 +118,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * @return the index of the next filled section in lineState after currentIndex, -1 if there is no filled section
      */
     public int nextFilledIndex(int currentIndex, ArrayList<Integer> lineState) {
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i < lineState.size()) {
             if (lineState.get(i) > 0) {
@@ -132,6 +136,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * @return the index of the previous filled section in lineState before currentIndex, -1 if there is no filled section
      */
     public int previousFilledIndex(int currentIndex, ArrayList<Integer> lineState) {
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i >= 0) {
             if (lineState.get(i) > 0) {
@@ -146,9 +151,11 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * Gets the index of the next empty section in lineState after currentIndex.
      * @param currentIndex the index of the current element in the line
      * @param lineState the lineState
-     * @return the index of the next empty section in lineState after currentIndex, -1 if there is no empty section
+     * @return the index of the next empty section in lineState after currentIndex,
+     * -1 if there is no empty section or index is out-of-bounds
      */
     public int nextEmptyIndex(int currentIndex, ArrayList<Integer> lineState) {
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i < lineState.size()) {
             if (lineState.get(i) < 0) {
@@ -166,6 +173,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
      * @return the index of the previous empty section in lineState before currentIndex, -1 if there is no empty section
      */
     public int previousEmptyIndex(int currentIndex, ArrayList<Integer> lineState) {
+        if(currentIndex>=lineState.size() || currentIndex<0){return -1;}
         int i = currentIndex;
         while (i >= 0) {
             if (lineState.get(i) < 0) {
@@ -192,20 +200,6 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
             }
         }
         return length;
-    }
-
-    /**
-     * Returns the length of the incomplete section in lineState.
-     * @param lineState the lineState
-     * @return the length of the incomplete section
-     */
-    public int lengthOfIncompleteSection(ArrayList<Integer> lineState) {
-        int startIndex = nextEmptyIndex(0, lineState);
-        int endIndex = previousEmptyIndex(lineState.size()-1, lineState);
-        if (startIndex == -1 || endIndex == -1){
-            return 0;
-        }
-        return lengthOfSection(startIndex, endIndex, lineState);
     }
 
     /**
@@ -298,7 +292,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
                 return -1;
             }
 
-            filledIndex = nextFilledIndex(filledIndex+stateValue, lineState);
+            filledIndex = nextFilledIndex(filledIndex+1, lineState);
             //no more filled squares
             if (filledIndex == -1){
                 return clueIndex;
@@ -339,7 +333,7 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
                 return -1;
             }
 
-            filledIndex = previousFilledIndex(filledIndex-stateValue, lineState);
+            filledIndex = previousFilledIndex(filledIndex-1, lineState);
             //no more filled squares
             if (filledIndex == -1){
                 return clueIndex;
@@ -385,6 +379,21 @@ abstract class LineSolverUtilities implements StateUtilities, ClueUtilities{
             return new ArrayList<>();
         }
         return new ArrayList<>(clue.getClue().subList(startIndex, endIndex + 1));
+    }
+
+    public Boolean allCluesComplete(Clue clue, ArrayList<Integer> lineState) {
+        if(clue.getClue().isEmpty()){
+            return true;
+        }
+
+        int clueIndex = 0;
+        for (Integer section : lineState){
+            if (section.equals(clue.getClue().get(clueIndex))){
+                clueIndex++;
+            }
+            if(clueIndex == clue.getClue().size()){break;}
+        }
+        return clueIndex == clue.getClue().size();
     }
 
 }

@@ -11,4 +11,5 @@ interface ClueUtilities {
     int lastIncompleteClue(Clue clue, ArrayList<Integer> lineState);
 
     ArrayList<Integer> removeCompletedClues(Clue clue, ArrayList<Integer> lineState);
+    Boolean allCluesComplete(Clue clue, ArrayList<Integer> lineState);
 }
