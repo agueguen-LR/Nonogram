@@ -20,6 +20,7 @@ public class LineSolverTest {
     private ArrayList<Square> lineCrossed;
     private ArrayList<Square> lineMixed;
     private ArrayList<Square> lineEmptySquares;
+    private ArrayList<Square> lineEmptySquaresExtra;
 
     private ArrayList<Square> line574;
     private ArrayList<Square> line44;
@@ -27,6 +28,7 @@ public class LineSolverTest {
     private ArrayList<Square> line44crossedStart;
     private ArrayList<Square> line44noPossibleExtension;
     private ArrayList<Square> line44noNeededExtension;
+    private ArrayList<Square> line44first4complete;
 
     private Clue clue574;
     private Clue clue44;
@@ -59,6 +61,11 @@ public class LineSolverTest {
         lineEmptySquares.get(1).fill();
         lineEmptySquares.get(3).fill();
 
+        lineEmptySquaresExtra = new ArrayList<>(Arrays.asList(new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square()));
+        lineEmptySquaresExtra.get(0).fill();
+        lineEmptySquaresExtra.get(1).fill();
+        lineEmptySquaresExtra.get(3).fill();
+
         line574 = new ArrayList<>(Arrays.asList(new Square(), new Square(), new Square(), new Square(),new Square(), new Square(), new Square(), new Square(),new Square(), new Square(), new Square(), new Square(),new Square(), new Square(), new Square(), new Square(),new Square(), new Square(), new Square(), new Square()));
         clue574 = clueConstructor.newInstance(new ArrayList<>(Arrays.asList(5, 7, 4)), 1234);
 
@@ -78,6 +85,11 @@ public class LineSolverTest {
         line44noNeededExtension.get(1).fill();
         line44noNeededExtension.get(2).fill();
         line44noNeededExtension.get(3).fill();
+        line44first4complete = new ArrayList<>(Arrays.asList(new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square(), new Square()));
+        line44first4complete.get(1).fill();
+        line44first4complete.get(2).fill();
+        line44first4complete.get(3).fill();
+        line44first4complete.get(4).fill();
         clue44 = clueConstructor.newInstance(new ArrayList<>(Arrays.asList(4, 4)), 1234);
 
         clue21 = clueConstructor.newInstance(new ArrayList<>(Arrays.asList(2, 1)), 1234);
@@ -147,12 +159,24 @@ public class LineSolverTest {
 
     @Test
     void testCrossPlacer(){
-        ArrayList<Integer> crossedSquares = lineSolver.CrossPlacer(lineSolver.getLineState(lineFilled), clue21);
+        ArrayList<Integer> crossedSquares = lineSolver.CrossPlacer(lineFilled, lineSolver.getLineState(lineFilled), clue21);
         ArrayList<Integer> expectedCrossedSquares = new ArrayList<>(List.of(2));
         assertEquals(expectedCrossedSquares, crossedSquares);
 
-        crossedSquares = lineSolver.CrossPlacer(lineSolver.getLineState(lineEmpty), new Clue());
+        crossedSquares = lineSolver.CrossPlacer(lineEmpty, lineSolver.getLineState(lineEmpty), new Clue());
         expectedCrossedSquares = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+        assertEquals(expectedCrossedSquares, crossedSquares);
+
+        crossedSquares = lineSolver.CrossPlacer(lineFilled, lineSolver.getLineState(lineFilled), clue21);
+        expectedCrossedSquares = new ArrayList<>(List.of(2));
+        assertEquals(expectedCrossedSquares, crossedSquares);
+
+        crossedSquares = lineSolver.CrossPlacer(lineEmptySquaresExtra, lineSolver.getLineState(lineEmptySquaresExtra), clue21);
+        expectedCrossedSquares = new ArrayList<>(Arrays.asList(2, 4, 5, 6, 7));
+        assertEquals(expectedCrossedSquares, crossedSquares);
+
+        crossedSquares = lineSolver.CrossPlacer(line44first4complete, lineSolver.getLineState(line44first4complete), clue44);
+        expectedCrossedSquares = new ArrayList<>(Arrays.asList(0, 5));
         assertEquals(expectedCrossedSquares, crossedSquares);
     }
     
